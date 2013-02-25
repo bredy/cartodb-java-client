@@ -54,14 +54,11 @@ public abstract class CartoDBClientIF {
 	 */
 	public static boolean isWriteQuery(String sql) {
 		String sqlLower = sql.toLowerCase();
-		if(sqlLower.indexOf("insert") != -1 ||
-		   sqlLower.indexOf("update") != -1 ||
-		   sqlLower.indexOf("delete") != -1 ||
-		   sqlLower.indexOf("create") != -1) {
-			return true;
-		}
-		return false;
-	}
+        return sqlLower.contains("insert") ||
+                sqlLower.contains("update") ||
+                sqlLower.contains("delete") ||
+                sqlLower.contains("create");
+    }
 	
 
 }

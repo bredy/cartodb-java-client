@@ -48,5 +48,22 @@ _Included in lib folder_
 * [Apache commons IO](http://commons.apache.org/io/)
 * [Jackson`s ObjectMapper](http://jackson.codehaus.org/)
 
+
+## Running tests
+
+Create your own Secret class, e.g. src/test/java/com/cartodb/Secret.java and fill in your credentials and testing table info
+
+```java
+public class Secret {
+    public static final String USER = "";
+    public static final String API_KEY = "";
+    public static final String PASSWORD = "";
+    public static final String CONSUMER_KEY = "";
+    public static final String CONSUMER_SECRET = "";
+    public static final String EXISTING_TABLE_WITH_DATA = "";
+}
+```
+
 ##TODO
 * Include error JSON on HTTP response 400.
+
