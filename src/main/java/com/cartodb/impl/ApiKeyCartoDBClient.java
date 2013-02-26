@@ -1,28 +1,15 @@
 package com.cartodb.impl;
 
+import com.cartodb.CartoDBClientIF;
+import com.cartodb.CartoDBException;
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-
-import javax.smartcardio.CardException;
-
-import org.apache.commons.io.IOUtils;
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.oauth.OAuthService;
-
-import com.cartodb.CartoDBAPI;
-import com.cartodb.CartoDBClientIF;
-import com.cartodb.CartoDBException;
 
 /**
  * CartoDB client implementation to access protected resources on CartoDB using OAuth.
@@ -82,37 +69,29 @@ public class ApiKeyCartoDBClient extends CartoDBClientIF {
      * @throws CartoDBException
      */
     public String executeQuery(String sqlQuery) throws CartoDBException {
-        String json = null;
 
         if(apiURL == null){
-            System.out.println("Error : uninitialized " + getClass().getName());
-            return null;
+            throw new CartoDBException("Error : uninitialized " + getClass().getName());
         }
 
-        boolean doPost = CartoDBClientIF.isWriteQuery(sqlQuery) || sqlQuery.length() >= MAX_SQL_GET_LENGTH;
+        String json;
         try {
             sqlQuery = URLEncoder.encode(sqlQuery, ENCODING);
             String params = "q=" + sqlQuery + "&api_key=" + this.apiKey;
-            if(doPost) {
-            	URL url = new URL(apiURL); 
-            	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                conn.setDoOutput(true);
-                conn.setDoInput(true);
-                conn.setRequestMethod("POST");
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write(params);
-                wr.flush();
-                wr.close();
-                json = IOUtils.toString(conn.getInputStream(), ENCODING);
-            } else {
-            	json = IOUtils.toString(new URL(apiURL + "?" + params), ENCODING);
-            }
-           
+
+            URL url = new URL(apiURL);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("POST");
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(params);
+            wr.flush();
+            wr.close();
+            json = IOUtils.toString(conn.getInputStream(), ENCODING);
             
         } catch (MalformedURLException e) {
             throw new CartoDBException("Could not get URL " + apiURL + sqlQuery);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }catch (IOException e) {
         	e.printStackTrace();
             throw new CartoDBException("Could not execute " + sqlQuery + " on CartoDB : ");

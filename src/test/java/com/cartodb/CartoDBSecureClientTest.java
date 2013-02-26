@@ -1,8 +1,7 @@
 package com.cartodb;
 
-import org.junit.Before;
-
 import com.cartodb.impl.SecuredCartoDBClient;
+import org.junit.Before;
 
 public class CartoDBSecureClientTest extends CartoDBTestClient {
 

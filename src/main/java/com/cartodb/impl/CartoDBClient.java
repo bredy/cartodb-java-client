@@ -1,15 +1,13 @@
 package com.cartodb.impl;
 
-import java.io.IOException;
+import com.cartodb.CartoDBClientIF;
+import com.cartodb.CartoDBException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-
-import org.apache.commons.io.IOUtils;
-
-import com.cartodb.CartoDBClientIF;
-import com.cartodb.CartoDBException;
+import java.nio.charset.Charset;
 
 /**
  * CartoDB client implementation to access public resources. You can only send SELECT queries to public
@@ -78,17 +76,14 @@ public class CartoDBClient extends CartoDBClientIF{
 		
 		try {
 			sqlQuery = URLEncoder.encode(sqlQuery,ENCODING);
-			json = IOUtils.toString(new URL(apiURL+sqlQuery), ENCODING);
+			json = new String((new URL(apiURL+sqlQuery)).toString().getBytes(), Charset.forName(ENCODING));
 		} catch (MalformedURLException e) {
 			System.out.println("Could not get URL " + apiURL+sqlQuery);
 			throw new CartoDBException(e.getMessage());
 		} catch (UnsupportedEncodingException e) {
 			throw new CartoDBException(e.getMessage());
-		} catch (IOException e) {
-			System.out.println("Could not execute " + sqlQuery+ " on CartoDB : ");
-			throw new CartoDBException(e.getMessage());
 		}
-		return json;
+        return json;
 	}
 	
 	public void setUser(String user){

@@ -33,4 +33,12 @@ public class CartoDBResponse<T> {
 		this.rows = rows;
 	}
 
+    @Override
+    public String toString() {
+        return "CartoDBResponse{" +
+                "time=" + time +
+                ", total_rows=" + total_rows +
+                ", rows=" + rows +
+                '}';
+    }
 }

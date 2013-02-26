@@ -51,5 +51,4 @@ public class CartoDBTestClient {
         assertEquals(CartoDBClientIF.isWriteQuery("deleTe from bla"), true);
         assertEquals(CartoDBClientIF.isWriteQuery("INSERT into ...from bla"), true);
     }
-
 }

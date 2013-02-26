@@ -1,19 +1,12 @@
 package com.cartodb;
 
-import java.io.IOException;
-
 import com.cartodb.model.CartoDBResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 /**
  * Interface for CartoDB client implementation
  * @author canadensys
- * @param <T>
- *
  */
 public abstract class CartoDBClientIF {
 	
